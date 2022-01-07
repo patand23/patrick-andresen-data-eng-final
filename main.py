@@ -42,8 +42,8 @@ def run():
     pipeline_options = PipelineOptions(
         project='york-cdf-start',
         region='us-central1',
-        temp_location='gs://york_temp_files/tmp',
-        staging_location='gs://york_temp_files/staging',
+        temp_location='gs://york-project-bucket/pas_df_bucket/dataflow/tmp/',
+        staging_location='gs://york-project-bucket/pas_df_bucket/dataflow/staging/',
         save_main_session=True,
         job_name='patrick-andresen-final-job'
     )
