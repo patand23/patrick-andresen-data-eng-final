@@ -24,7 +24,7 @@ class sales_filter(beam.DoFn):
         sf = {
             'cust_tier_code': str(element['CUST_TIER_CODE']),
             'sku': int(element['SKU']),
-            'total_sales_amount': element['total_sales_amount']
+            'total_sales_amount': round(element['total_sales_amount'],2)
         }
         yield sf
 
@@ -61,7 +61,7 @@ def run():
 
         raw_sales_data = p | 'Sales Query from BigQuery' >> beam.io.ReadFromBigQuery(
             query="""
-            SELECT CUST_TIER_CODE, SKU, SUM(ORDER_AMT)
+            SELECT CUST_TIER_CODE, SKU, SUM(ORDER_AMT) AS total_sales_amount
             FROM `york-cdf-start.final_input_data.customers` AS cust
             JOIN `york-cdf-start.final_input_data.orders` AS o ON cust.CUSTOMER_ID = o.CUSTOMER_ID
             GROUP BY SKU, CUST_TIER_CODE
@@ -76,7 +76,7 @@ def run():
 
         raw_sales_data | 'Transform for sales table' >> beam.ParDo(sales_filter()) | 'Print to Sales Table' >> beam.io.WriteToBigQuery(
             table='york-cdf-start:final_patrick_andresen.cust_tier_code-sku-total_sales_amount',
-            schema=VIEWS_SCHEMA,
+            schema=SALES_SCHEMA,
             create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED)
         pass
 
