@@ -1,6 +1,7 @@
 import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
 
+
 VIEWS_SCHEMA={
     'fields':[
         {'name':'cust_tier_code', 'type':'STRING', 'mode':'REQUIRED'},
