@@ -73,13 +73,13 @@ def run():
             table='york-cdf-start:final_patrick_andresen.cust_tier_code-sku-total_no_of_product_views',
             schema=VIEWS_SCHEMA,
             create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-            custom_gcs_temp_location="gs://york-trb/tmp")
+            custom_gcs_temp_location="gs://pas_df_bucket/tmp")
 
         raw_sales_data | 'Transform for sales table' >> beam.ParDo(sales_filter()) | 'Print to Sales Table' >> beam.io.WriteToBigQuery(
             table='york-cdf-start:final_patrick_andresen.cust_tier_code-sku-total_sales_amount',
             schema=SALES_SCHEMA,
             create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-            custom_gcs_temp_location="gs://york-trb/tmp")
+            custom_gcs_temp_location="gs://pas_df_bucket/tmp")
         pass
 
 if __name__ == "__main__":
